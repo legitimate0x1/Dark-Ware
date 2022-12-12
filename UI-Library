@@ -4796,28 +4796,31 @@ function library:CreateSettingsTab(menu)
     local req = syn and syn.request or http and http.request or http_request or getgenv().request or request or fluxus and fluxus.request
 
     mainSection:AddButton({text = 'Join Discord', flag = 'joindiscord', confirm = true, callback = function()
-        local res = req({
-            Url = 'http://127.0.0.1:6463/rpc?v=1',
-            Method = 'POST',
-            Headers = {
-                ['Content-Type'] = 'application/json',
-                Origin = 'https://discord.com'
-            },
-            Body = game:GetService('HttpService'):JSONEncode({
-                cmd = 'INVITE_BROWSER',
-                nonce = game:GetService('HttpService'):GenerateGUID(false),
-                args = {code = invCode}
-            })
-        })
-        if res.Success then
-            library:SendNotification(library.cheatname..' | joined discord', 3);
-        end
+        pcall(
+    function()
+        req(
+            {
+                Url = "http://127.0.0.1:6463/rpc?v=1",
+                Method = "POST",
+                Headers = {
+                    ["Content-Type"] = "application/json",
+                    Origin = "https://discord.com"
+                },
+                Body = game:GetService("HttpService"):JSONEncode(
+                    {
+                        cmd = "INVITE_BROWSER",
+                        nonce = game:GetService("HttpService"):GenerateGUID(false),
+                        args = {code = invCode}
+                    }
+                )
+            }
+        )
+    end
+)
     end})
-
-    local Clipboard = setclipboard or toclipboard
     
     mainSection:AddButton({text = 'Copy Discord', flag = 'copydiscord', callback = function()
-         Clipboard("https://discord.gg/"..invCode)
+         setclipboard("https://discord.gg/"..invCode)
     end})
 
     mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
