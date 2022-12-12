@@ -4765,7 +4765,7 @@ function library:CreateSettingsTab(menu)
 
     refreshConfigs()
 
-    mainSection:AddBind({text = 'Open / Close', flag = 'togglebind', nomouse = true, noindicator = true, bind = Enum.KeyCode.End, callback = function()
+    mainSection:AddBind({text = 'Open / Close', flag = 'togglebind', nomouse = true, noindicator = true, bind = Enum.KeyCode.Insert, callback = function()
         library:SetOpen(not library.open)
     end});
 
@@ -4782,45 +4782,6 @@ function library:CreateSettingsTab(menu)
         else
             actionservice:UnbindAction('FreezeMovement');
         end
-    end})
-
-    local Status, Info = pcall(function()
-         return game:GetService("HttpService"):JSONEncode(game:HttpGet("https://raw.githubusercontent.com/legitimate0x1/Dark-Ware/main/Version"))
-    end)
-
-    if Status ~= nil and Info ~= nil then
-        ver = Info.Version
-        invCode = Info.invCode
-    end
-
-    local req = syn and syn.request or http and http.request or http_request or getgenv().request or request or fluxus and fluxus.request
-
-    mainSection:AddButton({text = 'Join Discord', flag = 'joindiscord', confirm = true, callback = function()
-        pcall(
-    function()
-        req(
-            {
-                Url = "http://127.0.0.1:6463/rpc?v=1",
-                Method = "POST",
-                Headers = {
-                    ["Content-Type"] = "application/json",
-                    Origin = "https://discord.com"
-                },
-                Body = game:GetService("HttpService"):JSONEncode(
-                    {
-                        cmd = "INVITE_BROWSER",
-                        nonce = game:GetService("HttpService"):GenerateGUID(false),
-                        args = {code = invCode}
-                    }
-                )
-            }
-        )
-    end
-)
-    end})
-    
-    mainSection:AddButton({text = 'Copy Discord', flag = 'copydiscord', callback = function()
-         setclipboard("https://discord.gg/"..invCode)
     end})
 
     mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
