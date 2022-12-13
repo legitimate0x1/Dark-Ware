@@ -8,6 +8,8 @@ end)
 
 if result ~= nil and Info ~= nil then
     invCode = Info.invCode
+else
+    return warn("[DW] An error occurred while inviting you.")
 end
 
 pcall(
