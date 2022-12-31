@@ -22,6 +22,7 @@ end
 getgenv().DW_ESP = {
     Enabled = true,
     Box = false,
+    HealthBar = true,
     Name = false,
     Tracers = false,
     Chams = false,
@@ -107,15 +108,24 @@ local function ESP(v)
             end
 
             if onScreen then
+                BoxOutline.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
+                BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
+
+                Box.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
+                Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
                 if DW_ESP.Box then
-                    BoxOutline.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                    BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
+                    --BoxOutline.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
+                    --BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
                     BoxOutline.Visible = true
     
-                    Box.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                    Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
+                    --Box.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
+                    --Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
                     Box.Visible = true
-                        
+                else
+                    BoxOutline.Visible = false
+                    Box.Visible = false
+                end
+                if DW_ESP.HealthBar then
                     HealthBarOutline.Size = Vector2.new(2, HeadPosition.Y - LegPosition.Y)
                     HealthBarOutline.Position = BoxOutline.Position - Vector2.new(6,0)
                     HealthBarOutline.Visible = true
@@ -125,8 +135,6 @@ local function ESP(v)
                     HealthBar.Color = Color3.fromRGB(255 - 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 0)
                     HealthBar.Visible = true
                 else
-                    BoxOutline.Visible = false
-                    Box.Visible = false
                     HealthBarOutline.Visible = false
                     HealthBar.Visible = false
                 end
