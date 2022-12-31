@@ -20,7 +20,7 @@ function AttachChams(parent, face)
 end
 
 getgenv().DW_ESP = {
-    Enabled = true,
+    Enabled = false,
     Box = false,
     HealthBar = false,
     Name = false,
