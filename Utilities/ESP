@@ -22,7 +22,7 @@ end
 getgenv().DW_ESP = {
     Enabled = true,
     Box = false,
-    HealthBar = true,
+    HealthBar = false,
     Name = false,
     Tracers = false,
     Chams = false,
