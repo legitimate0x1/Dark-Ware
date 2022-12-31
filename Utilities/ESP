@@ -27,8 +27,7 @@ getgenv().DW_ESP = {
     Tracers = false,
     Chams = false,
     Font = "UI",
-    Teammates = false,
-    VisibleOnly = false,
+    TeamCheck = false,
     UnlockTracers = false,
     TextSize = 16
 }
