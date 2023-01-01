@@ -24,6 +24,7 @@ getgenv().DW_ESP = {
     Box = false,
     HealthBar = false,
     Name = false,
+    Health = false,
     Weapon = false,
     Tracers = false,
     Chams = false,
@@ -84,6 +85,14 @@ local function ESP(v)
     Gun.Size = 12
     Gun.Center = true
     Gun.Outline = true
+
+    local Health = Drawing.new("Text")
+    Health.Transparency = 1
+    Health.Visible = false
+    Health.Color = Color3.new(1,1,1)
+    Health.Size = 12
+    Health.Center = true
+    Health.Outline = true
 
     game:GetService("RunService").RenderStepped:Connect(function()
         if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v ~= lplr and v.Character.Humanoid.Health > 0 then
@@ -190,6 +199,23 @@ local function ESP(v)
                 else
                     Gun.Visible = false
                 end
+                if DW_ESP.Health then
+                    Health.Size = DW_ESP.TextSize
+                    Health.Text = math.floor(lplr.Character:FindFirstChildOfClass("Humanoid").Health).."/"..math.floor(lplr.Character:FindFirstChildOfClass("Humanoid").MaxHealth)
+                    Health.Position = Vector2.new(workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).X - 30, workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).Y + 20)
+                    Health.Visible = true
+                    if DW_ESP.Font == "UI" then
+                        Health.Font = 0
+                    elseif DW_ESP.Font == "System" then
+                        Health.Font = 1
+                    elseif DW_ESP.Font == "Plex" then
+                        Health.Font = 2
+                    elseif DW_ESP.Font == "Monospace" then
+                        Health.Font = 3
+                    end
+                else
+                    Health.Visible = false
+                end
             else
                 BoxOutline.Visible = false
                 Box.Visible = false
@@ -198,6 +224,7 @@ local function ESP(v)
                 Tracer.Visible = false
                 Name.Visible = false
                 Gun.Visible = false
+                Health.Visible = false
             end
         else
             BoxOutline.Visible = false
@@ -207,6 +234,7 @@ local function ESP(v)
             Tracer.Visible = false
             Name.Visible = false
             Gun.Visible = false
+            Health.Visible = false
         end
     end)
 end
