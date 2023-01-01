@@ -20,14 +20,15 @@ function AttachChams(parent, face)
 end
 
 getgenv().DW_ESP = {
-    Enabled = false,
+    Enabled = true,
     Box = false,
-    HealthBar = false,
+    HealthBar = true,
     Name = false,
     Tracers = false,
     Chams = false,
     Font = "UI",
-    TeamCheck = false,
+    Teammates = false,
+    VisibleOnly = false,
     UnlockTracers = false,
     TextSize = 16
 }
@@ -107,30 +108,30 @@ local function ESP(v)
             end
 
             if onScreen then
-                BoxOutline.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
-
-                Box.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
                 if DW_ESP.Box then
-                    --BoxOutline.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                    --BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
+                    BoxOutline.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
+                    BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
                     BoxOutline.Visible = true
     
-                    --Box.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                    --Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
+                    Box.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
+                    Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
                     Box.Visible = true
                 else
                     BoxOutline.Visible = false
                     Box.Visible = false
                 end
                 if DW_ESP.HealthBar then
+                    local A_Outline_Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
+                    local A_Outline = Vector2.new(RootPosition.X - A_Outline_Size.X / 2, RootPosition.Y - A_Outline_Size.Y / 2)
+                    local A_Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
+                    local A_Position = Vector2.new(RootPosition.X - A_Size.X / 2, RootPosition.Y - A_Size.Y / 2)
+ 
                     HealthBarOutline.Size = Vector2.new(2, HeadPosition.Y - LegPosition.Y)
-                    HealthBarOutline.Position = BoxOutline.Position - Vector2.new(6,0)
+                    HealthBarOutline.Position = A_Outline - Vector2.new(6,0)
                     HealthBarOutline.Visible = true
     
                     HealthBar.Size = Vector2.new(2, (HeadPosition.Y - LegPosition.Y) / (v.Character.Humanoid.MaxHealth / math.clamp(v.Character.Humanoid.Health, 0,v.Character.Humanoid.MaxHealth)))
-                    HealthBar.Position = Vector2.new(Box.Position.X - 6, Box.Position.Y + (1 / HealthBar.Size.Y))
+                    HealthBar.Position = Vector2.new(A_Position.X - 6, A_Position.Y + (1 / HealthBar.Size.Y))
                     HealthBar.Color = Color3.fromRGB(255 - 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 0)
                     HealthBar.Visible = true
                 else
