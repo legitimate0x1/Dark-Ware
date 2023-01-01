@@ -24,6 +24,7 @@ getgenv().DW_ESP = {
     Box = false,
     HealthBar = false,
     Name = false,
+    Weapon = false,
     Tracers = false,
     Chams = false,
     Font = "UI",
@@ -156,23 +157,31 @@ local function ESP(v)
                     Name.Size = DW_ESP.TextSize
                     if DW_ESP.Font == "UI" then
                         Name.Font = 0
-                        Gun.Font = 0
                     elseif DW_ESP.Font == "System" then
                         Name.Font = 1
-                        Gun.Font = 1
                     elseif DW_ESP.Font == "Plex" then
                         Name.Font = 2
-                        Gun.Font = 2
                     elseif DW_ESP.Font == "Monospace" then
                         Name.Font = 3
-                        Gun.Font = 3
                     end
+                else
+                    Name.Visible = false
+                end
+                if DW_ESP.Weapon then
                     Gun.Size = DW_ESP.TextSize
                     Gun.Text = tostring("<3")
                     Gun.Position = Vector2.new(LegPosition.X, LegPosition.Y + 10)
                     Gun.Visible = true
+                    if DW_ESP.Font == "UI" then
+                        Gun.Font = 0
+                    elseif DW_ESP.Font == "System" then
+                        Gun.Font = 1
+                    elseif DW_ESP.Font == "Plex" then
+                        Gun.Font = 2
+                    elseif DW_ESP.Font == "Monospace" then
+                        Gun.Font = 3
+                    end
                 else
-                    Name.Visible = false
                     Gun.Visible = false
                 end
             else
