@@ -33,7 +33,7 @@ local next, newInstance, newUDim2, newVector2 = next, Instance.new, UDim2.new, V
 local isexecutorclosure = isexecutorclosure or is_synapse_function or is_sirhurt_closure or iskrnlclosure;
 local executor = (
     syn and 'syn' or
-    getexecutorname and getexecutorname() or
+    getexecutorname and getexecutorname() or identifyexecutor and identifyexecutor() or
     'unknown'
 )
 
@@ -1377,7 +1377,7 @@ function library:init()
         end
         -------------------------
 
-        local Base64_Decode = base64_decode or syn.crypt.base64.decode or function(data)
+        local Base64_Decode = base64_decode or syn and syn.crypt.base64.decode or function(data)
     local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
     data = string.gsub(data, '[^'..b..'=]', '')
     return (data:gsub('.', function(x)
