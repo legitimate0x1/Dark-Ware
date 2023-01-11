@@ -36,7 +36,6 @@ getgenv().DW_ESP = {
     Chams = false,
     Font = "UI",
     TeamCheck = false,
-    VisibleOnly = false,
     UnlockTracers = false,
     TextSize = 16
 }
