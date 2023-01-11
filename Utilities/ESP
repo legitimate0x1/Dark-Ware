@@ -5,6 +5,12 @@ local worldToViewportPoint = CurrentCamera.worldToViewportPoint
 local mouse = game.Players.LocalPlayer:GetMouse()
 local UserInput = game:GetService("UserInputService")
 
+function IsAlly(Player)
+    if Player.Team == lplr.Team then
+        return true
+    end
+end
+
 function AttachChams(parent, face)
 	local SurfaceGui = Instance.new("SurfaceGui",parent) 
 	SurfaceGui.Parent = parent
@@ -76,7 +82,6 @@ local function ESP(v)
     Name.Size = 12
     Name.Center = true
     Name.Outline = true
-    
 
     local Gun = Drawing.new("Text")
     Gun.Transparency = 1
@@ -118,6 +123,12 @@ local function ESP(v)
             end
 
             if onScreen then
+                if DW_ESP.TeamCheck then
+                    if IsAlly(v) then
+                        return
+                    end
+                end
+                
                 if DW_ESP.Box then
                     BoxOutline.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
                     BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
@@ -178,13 +189,9 @@ local function ESP(v)
                 end
                 if DW_ESP.Weapon then
                     Gun.Size = DW_ESP.TextSize
-                    for i,Child in pairs(v.Character:GetChildren()) do
-                        if Child:IsA("Tool") then
-                            Gun.Text = tostring(Child.Name)
-                       else
-                            Gun.Text = "None"
-                        end
-                    end
+                    pcall(function()
+                         Gun.Text = lplr.Character:FindFirstChildWhichIsA("Tool").Name
+                    end)
                     Gun.Position = Vector2.new(LegPosition.X, LegPosition.Y + 10)
                     Gun.Visible = true
                     if DW_ESP.Font == "UI" then
@@ -246,3 +253,15 @@ end
 game.Players.PlayerAdded:Connect(function(v)
     ESP(v)
 end)
+
+--[[
+
+     for i,Child in pairs(v.Character:GetChildren()) do
+         if Child:IsA("Tool") then
+             Gun.Text = tostring(Child.Name)
+        else
+             Gun.Text = "None"
+         end
+     end
+
+--]]
