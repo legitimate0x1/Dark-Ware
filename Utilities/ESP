@@ -5,8 +5,8 @@ local worldToViewportPoint = CurrentCamera.worldToViewportPoint
 local mouse = game.Players.LocalPlayer:GetMouse()
 local UserInput = game:GetService("UserInputService")
 
-function IsAlly(Player)
-    if Player.Team == lplr.Team then
+function TeamCheck(Player)
+    if Player.Team ~= lplr.Team then
         return true
     end
 end
@@ -123,8 +123,8 @@ local function ESP(v)
 
             if onScreen then
                 if DW_ESP.TeamCheck then
-                    if IsAlly(v) then
-                        return
+                    if not TeamCheck(v) then
+                        repeat wait() until TeamCheck(v)
                     end
                 end
                 
