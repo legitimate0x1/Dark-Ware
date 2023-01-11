@@ -189,9 +189,7 @@ local function ESP(v)
                 end
                 if DW_ESP.Weapon then
                     Gun.Size = DW_ESP.TextSize
-                    pcall(function()
-                         Gun.Text = lplr.Character:FindFirstChildWhichIsA("Tool").Name
-                    end)
+                    Gun.Text = v.Character:FindFirstChildWhichIsA("Tool") and v.Character:FindFirstChildWhichIsA("Tool").Name or "None"
                     Gun.Position = Vector2.new(LegPosition.X, LegPosition.Y + 10)
                     Gun.Visible = true
                     if DW_ESP.Font == "UI" then
