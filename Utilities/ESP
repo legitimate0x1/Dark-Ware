@@ -124,7 +124,7 @@ local function ESP(v)
             if onScreen then
                 if DW_ESP.TeamCheck then
                     if not TeamCheck(v) then
-                        repeat wait() until TeamCheck(v)
+                        repeat RunService.RenderStepped:Wait() until TeamCheck(v)
                     end
                 end
                 
