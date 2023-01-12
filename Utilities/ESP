@@ -5,9 +5,21 @@ local worldToViewportPoint = CurrentCamera.worldToViewportPoint
 local mouse = game.Players.LocalPlayer:GetMouse()
 local UserInput = game:GetService("UserInputService")
 
-function TeamCheck(Player)
-    if Player.Team ~= lplr.Team then
+function IsAlly(Player)
+    if Player.Team == lplr.Team then
         return true
+    end
+end
+
+function TeamCheck(Player) -- Ally --> true, Enemy --> false.
+    if DW_ESP and DW_ESP.TeamCheck then
+        if IsAlly(Player) then
+            return true
+       else
+            return false
+        end
+   else
+        return false
     end
 end
 
@@ -121,21 +133,15 @@ local function ESP(v)
                 end
             end
 
-            if onScreen then
-                if DW_ESP.TeamCheck then
-                    if not TeamCheck(v) then
-                        repeat RunService.RenderStepped:Wait() until TeamCheck(v)
-                    end
-                end
-                
+            if onScreen then       
                 if DW_ESP.Box then
                     BoxOutline.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
                     BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
-                    BoxOutline.Visible = true
+                    if not TeamCheck(v) then BoxOutline.Visible = true else BoxOutline.Visible = false end
     
                     Box.Size = Vector2.new(2500 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
                     Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
-                    Box.Visible = true
+                    if not TeamCheck(v) then Box.Visible = true else Box.Visible = false end
                 else
                     BoxOutline.Visible = false
                     Box.Visible = false
@@ -148,12 +154,12 @@ local function ESP(v)
  
                     HealthBarOutline.Size = Vector2.new(2, HeadPosition.Y - LegPosition.Y)
                     HealthBarOutline.Position = A_Outline - Vector2.new(6,0)
-                    HealthBarOutline.Visible = true
+                    if not TeamCheck(v) then HealthBarOutline.Visible = true else HealthBarOutline.Visible = false end
     
                     HealthBar.Size = Vector2.new(2, (HeadPosition.Y - LegPosition.Y) / (v.Character.Humanoid.MaxHealth / math.clamp(v.Character.Humanoid.Health, 0,v.Character.Humanoid.MaxHealth)))
                     HealthBar.Position = Vector2.new(A_Position.X - 6, A_Position.Y + (1 / HealthBar.Size.Y))
                     HealthBar.Color = Color3.fromRGB(255 - 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 0)
-                    HealthBar.Visible = true
+                    if not TeamCheck(v) then HealthBar.Visible = true else HealthBar.Visible = false end
                 else
                     HealthBarOutline.Visible = false
                     HealthBar.Visible = false
@@ -165,14 +171,14 @@ local function ESP(v)
                         Tracer.From = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 1)
                     end
                     Tracer.To = Vector2.new(Vector.X, Vector.Y)
-                    Tracer.Visible = true
+                    if not TeamCheck(v) then Tracer.Visible = true else Tracer.Visible = false end
                 else
                     Tracer.Visible = false
                 end
                 if DW_ESP.Name then
                     Name.Text = tostring(v.Name)
                     Name.Position = Vector2.new(workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).X, workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).Y - 30)
-                    Name.Visible = true
+                    if not TeamCheck(v) then Name.Visible = true else Name.Visible = false end
                     Name.Size = DW_ESP.TextSize
                     if DW_ESP.Font == "UI" then
                         Name.Font = 0
@@ -190,7 +196,7 @@ local function ESP(v)
                     Gun.Size = DW_ESP.TextSize
                     Gun.Text = v.Character:FindFirstChildWhichIsA("Tool") and v.Character:FindFirstChildWhichIsA("Tool").Name or "None"
                     Gun.Position = Vector2.new(LegPosition.X, LegPosition.Y + 10)
-                    Gun.Visible = true
+                    if not TeamCheck(v) then Gun.Visible = true else Gun.Visible = false end
                     if DW_ESP.Font == "UI" then
                         Gun.Font = 0
                     elseif DW_ESP.Font == "System" then
@@ -207,7 +213,7 @@ local function ESP(v)
                     Health.Size = DW_ESP.TextSize
                     Health.Text = math.floor(lplr.Character:FindFirstChildOfClass("Humanoid").Health).."/"..math.floor(lplr.Character:FindFirstChildOfClass("Humanoid").MaxHealth)
                     Health.Position = Vector2.new(workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).X - 30, workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).Y + 20)
-                    Health.Visible = true
+                    if not TeamCheck(v) then Health.Visible = true else Health.Visible = false end
                     if DW_ESP.Font == "UI" then
                         Health.Font = 0
                     elseif DW_ESP.Font == "System" then
@@ -251,8 +257,14 @@ game.Players.PlayerAdded:Connect(function(v)
     ESP(v)
 end)
 
---[[
 
+--[[
+     -- Team Check (Old)
+     if TeamCheck(v) then
+         repeat RunService.RenderStepped:Wait() until not TeamCheck(v)
+     end
+
+     -- Tool Text (Old)
      for i,Child in pairs(v.Character:GetChildren()) do
          if Child:IsA("Tool") then
              Gun.Text = tostring(Child.Name)
