@@ -1,4 +1,4 @@
--- Made by legitimate0x1#4529
+-- Made by ArasOfficial#8439
 
 local req = syn and syn.request or http and http.request or http_request or getgenv().request or request or fluxus and fluxus.request
 
